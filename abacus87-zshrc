@@ -1,0 +1,89 @@
+# antigen
+
+source ~/.antigen/antigen.zsh
+
+antigen use oh-my-zsh
+
+# configure theme
+
+antigen theme denysdovhan/spaceship-prompt
+
+SPACESHIP_PROMPT_ADD_NEWLINE=false
+SPACESHIP_BATTERY_SHOW=false
+SPACESHIP_CONDA_SHOW=false
+
+# load plug-ins
+
+antigen bundles <<EOBUNDLES
+    git
+    gitfast
+    command-not-found
+    colored-man-pages
+    debian
+    pyenv 
+    python
+    wd
+    sudo
+    npm
+    gem
+    rbenv
+    bundler
+    aws
+    docker
+    pipenv 
+    vscode
+    lukechilds/zsh-nvm
+    nvm
+    pip
+    docker
+    docker-compose
+    docker-machine 
+    zsh-users/zsh-syntax-highlighting
+    yarn
+    kubectl
+    kubeadm
+EOBUNDLES
+
+antigen apply
+
+# environment configuration
+
+## configure syntax highlighting
+
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+ZSH_HIGHLIGHT_STYLES[precommand]=fg=green
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+## configure pyenv
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+## load rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+## enable cargo
+source $HOME/.cargo/env
+
+# enable Android platform tools
+export PATH="$HOME/Android/Sdk/platform-tools:$PATH"
+
+## add ~/.local/bin to PATH
+export PATH=$HOME/.local/bin:$PATH
+
+## tilix shim
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte-2.91.sh
+fi
+
+## apt aliases
+alias ad="sudo apt update"
+alias ag="sudo apt-fast upgrade"
+alias ai="sudo apt-fast install"
+alias adu="sudo apt-fast dist-upgrade"
+alias adg="ad && ag"
+alias adi="ad && ai"
+alias addu="ad && adu"
+alias aar="sudo add-apt-repository"
+alias ppu="sudo ppa-purge"
+alias aur="sudo apt autoremove --purge"
