@@ -29,7 +29,6 @@ antigen bundles <<EOBUNDLES
     rbenv
     bundler
     aws
-    docker
     pipenv 
     vscode
     lukechilds/zsh-nvm
