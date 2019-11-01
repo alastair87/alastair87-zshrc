@@ -42,6 +42,7 @@ antigen bundles <<EOBUNDLES
     yarn
     kubectl
     kubeadm
+    endaaman/lxd-completion-zsh
 EOBUNDLES
 
 antigen apply
