@@ -45,6 +45,7 @@ antigen bundles <<EOBUNDLES
     bilelmoussaoui/flatpak-zsh-completion
     systemd
     virtualbox
+    unixorn/autoupdate-antigen.zshplugin
 EOBUNDLES
 
 antigen apply
