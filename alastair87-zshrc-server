@@ -26,6 +26,7 @@ antigen bundles <<EOBUNDLES
     docker-compose
     zsh-users/zsh-syntax-highlighting
     systemd
+    unixorn/autoupdate-antigen.zshplugin
 EOBUNDLES
 
 antigen apply
@@ -47,4 +48,4 @@ alias adu="sudo apt-get dist-upgrade"
 alias adg="ad && ag"
 alias adi="ad && ai"
 alias addu="ad && adu"
-alias aur="sudo apt autoremove --purge"
+alias aur="sudo apt-get autoremove --purge"
