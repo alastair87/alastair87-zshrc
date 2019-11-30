@@ -22,10 +22,8 @@ antigen bundles <<EOBUNDLES
     python
     wd
     sudo
-    pip
     docker
     docker-compose
-    docker-machine 
     zsh-users/zsh-syntax-highlighting
     systemd
 EOBUNDLES
@@ -43,12 +41,10 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 ## apt aliases
 alias ad="sudo apt update"
-alias ag="sudo apt-fast upgrade"
-alias ai="sudo apt-fast install"
-alias adu="sudo apt-fast dist-upgrade"
+alias ag="sudo apt-get upgrade"
+alias ai="sudo apt-get install"
+alias adu="sudo apt-get dist-upgrade"
 alias adg="ad && ag"
 alias adi="ad && ai"
 alias addu="ad && adu"
-alias aar="sudo add-apt-repository"
-alias ppu="sudo ppa-purge"
 alias aur="sudo apt autoremove --purge"
