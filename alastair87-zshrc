@@ -4,14 +4,6 @@ source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
 
-# configure theme
-
-antigen theme denysdovhan/spaceship-prompt
-
-SPACESHIP_PROMPT_ADD_NEWLINE=false
-SPACESHIP_BATTERY_SHOW=false
-SPACESHIP_CONDA_SHOW=false
-
 # load plug-ins
 
 antigen bundles <<EOBUNDLES
@@ -28,23 +20,26 @@ antigen bundles <<EOBUNDLES
     gem
     rbenv
     bundler
-    aws
     pipenv 
     vscode
-    lukechilds/zsh-nvm
     nvm
     pip
     docker
     docker-compose
     docker-machine 
-    zsh-users/zsh-syntax-highlighting
     yarn
     kubectl
     kubeadm
-    endaaman/lxd-completion-zsh
-    bilelmoussaoui/flatpak-zsh-completion
+    lxd
     systemd
     virtualbox
+    extract
+EOBUNDLES
+
+antigen bundles <<EOBUNDLES
+    zsh-users/zsh-syntax-highlighting
+    lukechilds/zsh-nvm
+    bilelmoussaoui/flatpak-zsh-completion
     unixorn/autoupdate-antigen.zshplugin
 EOBUNDLES
 
@@ -57,6 +52,7 @@ antigen apply
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 ZSH_HIGHLIGHT_STYLES[precommand]=fg=green
+ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=green
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 ## configure pyenv
@@ -82,12 +78,40 @@ fi
 
 ## apt aliases
 alias ad="sudo apt update"
-alias ag="sudo apt-fast upgrade"
-alias ai="sudo apt-fast install"
-alias adu="sudo apt-fast dist-upgrade"
+alias ag="sudo apt-get upgrade"
+alias ai="sudo apt-get install"
+alias adu="sudo apt-get dist-upgrade"
 alias adg="ad && ag"
 alias adi="ad && ai"
 alias addu="ad && adu"
 alias aar="sudo add-apt-repository"
 alias ppu="sudo ppa-purge"
 alias aur="sudo apt autoremove --purge"
+
+# application aliases
+alias sml="rlwrap sml"
+alias netcat="rlwrap netcat"
+
+# ssh aliases
+alias bodley="ssh alastair@192.168.1.2"
+
+# dropbox aliases
+alias dbi="attr -s com.dropbox.ignored -V 1"
+alias dbu"attr -r com.dropbox.ignored"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/alastair/.local/share/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/alastair/.local/share/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/alastair/.local/share/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/alastair/.local/share/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+eval "$(starship init zsh)"
