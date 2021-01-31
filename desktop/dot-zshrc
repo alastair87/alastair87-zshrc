@@ -1,6 +1,6 @@
 # antigen
 
-source ~/.antigen/antigen.zsh
+source $HOME/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
 
@@ -11,7 +11,6 @@ antigen bundles <<EOBUNDLES
     gitfast
     command-not-found
     colored-man-pages
-    debian
     pyenv 
     python
     wd
@@ -22,7 +21,6 @@ antigen bundles <<EOBUNDLES
     bundler
     pipenv 
     vscode
-    nvm
     pip
     docker
     docker-compose
@@ -34,16 +32,24 @@ antigen bundles <<EOBUNDLES
     systemd
     virtualbox
     extract
+    fzf
+    systemadmin
+    universalarchive
 EOBUNDLES
 
 antigen bundles <<EOBUNDLES
     zsh-users/zsh-syntax-highlighting
-    lukechilds/zsh-nvm
+    zsh-users/zsh-completions
     bilelmoussaoui/flatpak-zsh-completion
-    unixorn/autoupdate-antigen.zshplugin
+    dominik-schwabe/zsh-fnm
+    endaaman/lxd-completion-zsh
 EOBUNDLES
 
 antigen apply
+
+# load starship
+
+eval "$(starship init zsh)"
 
 # environment configuration
 
@@ -55,45 +61,30 @@ ZSH_HIGHLIGHT_STYLES[precommand]=fg=green
 ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=green
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
-## configure pyenv
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
-## load rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
+## load rbenv (as configured with rbenv installer)
+export PATH=$HOME/.rbenv/bin:$PATH
 eval "$(rbenv init -)"
 
-## enable cargo
-source $HOME/.cargo/env
+## load pyenv (as configured with pyenv installer)
+export PATH=$HOME/.pyenv/bin:$PATH
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
-# enable Android platform tools
-export PATH="$HOME/Android/Sdk/platform-tools:$PATH"
+## enable Android platform tools (use the tools bundled with the SDK rather than the OS)
+export PATH="$HOME/.local/share/Android/Sdk/platform-tools:$PATH"
 
-## add ~/.local/bin to PATH
+## add ~/.local/bin to PATH (user installed binaries)
 export PATH=$HOME/.local/bin:$PATH
 
-## tilix shim
-if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-        source /etc/profile.d/vte-2.91.sh
-fi
-
-## apt aliases
-alias ad="sudo apt update"
-alias ag="sudo apt-get upgrade"
-alias ai="sudo apt-get install"
-alias adu="sudo apt-get dist-upgrade"
-alias adg="ad && ag"
-alias adi="ad && ai"
-alias addu="ad && adu"
-alias aar="sudo add-apt-repository"
-alias ppu="sudo ppa-purge"
-alias aur="sudo apt autoremove --purge"
+## add ~/.cargo/bin to PATH (user-scope rust binary install)
+export PATH=$HOME/.cargo/bin:$PATH
 
 # application aliases
 alias sml="rlwrap sml"
 alias netcat="rlwrap netcat"
 
 # ssh aliases
-alias bodley="ssh alastair@192.168.1.2"
 
 # dropbox aliases
 alias dbi="attr -s com.dropbox.ignored -V 1"
@@ -114,4 +105,20 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-eval "$(starship init zsh)"
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/alastair/.local/share/google-cloud-sdk/path.zsh.inc' ]; then . '/home/alastair/.local/share/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/alastair/.local/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/alastair/.local/share/google-cloud-sdk/completion.zsh.inc'; fi
+
+# shims
+
+## fix issues with errors from systemd oh-my-zsh plugin
+_systemctl_unit_state() {
+  typeset -gA _sys_unit_state
+  _sys_unit_state=( $(__systemctl list-unit-files "$PREFIX*" | awk '{print $1, $2}') ) }
+ 
+# multipass completions (this uses bashcompinit to allow loading bash completions in zsh)
+autoload compinit && compinit
+autoload bashcompinit && bashcompinit
+source $HOME/.bash_completion.d/multipass
